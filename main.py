@@ -73,7 +73,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         # Send message text to backend and get response
-        response = requests.post(f"{API_BASE_URL}/conversation", json={"message": text, "message_type": message_type})
+        response = requests.post(f"{API_BASE_URL}/conversation", json={"message": text, "message_type": message_type, "chat_id": chat_id})
         
         if response.status_code == 200:
             reply_text = response.json().get("reply")
