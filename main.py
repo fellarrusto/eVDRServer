@@ -47,7 +47,7 @@ async def auth_end(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
     try:
         # Send data to your backend for authentication
-        response = requests.post(f"{API_BASE_URL}/auth", json={"phone_number": phone_number, "chat_id": chat_id})
+        response = requests.post(f"{API_BASE_URL}/bot/auth", json={"phone_number": phone_number, "chat_id": chat_id})
         
         if response.status_code == 200:
             auth_success = response.json().get("success", False)
@@ -72,7 +72,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         # Send message text to backend and get response
-        response = requests.post(f"{API_BASE_URL}/conversation", json={"message": text, "message_type": message_type})
+        response = requests.post(f"{API_BASE_URL}/bot/conversation", json={"message": text, "message_type": message_type})
         
         if response.status_code == 200:
             reply_text = response.json().get("reply")
