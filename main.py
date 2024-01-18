@@ -26,7 +26,7 @@ async def indizio_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         # Include chat_id in the request to the backend server
-        response = requests.get(f"{API_BASE_URL}/bot/indizio", params={"chat_id": chat_id})
+        response = requests.post(f"{API_BASE_URL}/bot/indizio", json={"chat_id": chat_id})
 
         if response.status_code == 200:
             indizio_url = response.json().get("url")
