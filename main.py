@@ -9,7 +9,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 TOKEN: Final = os.getenv('TOKEN', 'default_token')
 BOT_USERNAME: Final = os.getenv('BOT_USERNAME', 'default_bot_username')
 
-API_BASE_URL = "http://0.0.0.0:0000"
+API_BASE_URL =  os.getenv('API_BASE_URL', 'default_bot_username')
 
 # States for the conversation
 AUTH_STATES = range(1)
@@ -23,7 +23,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def indizio_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        response = requests.get(f"{API_BASE_URL}/indizio")
+        response = requests.get(f"{API_BASE_URL}/bot/indizio")
 
         if response.status_code == 200:
             indizio_url = response.json().get("url")
@@ -47,7 +47,7 @@ async def auth_end(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
     try:
         # Send data to your backend for authentication
-        response = requests.post(f"{API_BASE_URL}/auth", json={"phone_number": phone_number, "chat_id": chat_id})
+        response = requests.post(f"{API_BASE_URL}/bot/auth", json={"phone_number": phone_number, "chat_id": chat_id})
         
         if response.status_code == 200:
             auth_success = response.json().get("success", False)
@@ -72,15 +72,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text: str = update.message.text
 
     try:
-        # Send message text, message type, and chat ID to backend and get response
-        response = requests.post(
-            f"{API_BASE_URL}/conversation",
-            json={
-                "message": text,
-                "message_type": message_type,
-                "chat_id": chat_id
-            }
-        )
+        # Send message text to backend and get response
+        response = requests.post(f"{API_BASE_URL}/conversation", json={"message": text, "message_type": message_type})
         
         if response.status_code == 200:
             reply_text = response.json().get("reply")
