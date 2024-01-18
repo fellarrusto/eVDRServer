@@ -1,11 +1,13 @@
+import os
 from typing import Final
 import requests
 from requests.exceptions import RequestException
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes, ConversationHandler
 
-TOKEN: Final = "6448359217:AAF_qrESADH1rRJN6S-GNy9D7SKDp0IAj08"
-BOT_USERNAME: Final = "@corsari_evdr_bot"
+# Retrieve token and bot username from environment variables
+TOKEN: Final = os.getenv('TOKEN', 'default_token')
+BOT_USERNAME: Final = os.getenv('BOT_USERNAME', 'default_bot_username')
 
 API_BASE_URL = "http://0.0.0.0:0000"
 

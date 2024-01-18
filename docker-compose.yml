@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: python main.py
+    volumes:
+      - .:/opt/app
+    environment:
+      - DEBUG=1  # Set to 0 in production
+      - TOKEN=6448359217:AAF_qrESADH1rRJN6S-GNy9D7SKDp0IAj08
+      - BOT_USERNAME=@corsari_evdr_bot
