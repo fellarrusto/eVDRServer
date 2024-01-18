@@ -9,7 +9,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 TOKEN: Final = os.getenv('TOKEN', 'default_token')
 BOT_USERNAME: Final = os.getenv('BOT_USERNAME', 'default_bot_username')
 
-API_BASE_URL = "http://0.0.0.0:8000/api/v1"
+API_BASE_URL = "http://127.0.0.1:8000/api/v1"
 
 # States for the conversation
 AUTH_STATES = range(1)
