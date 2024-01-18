@@ -68,15 +68,25 @@ async def auth_end(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_type: str = update.message.chat.type
+    chat_id: int = update.message.chat.id  # Extract chat ID
     text: str = update.message.text
 
     try:
-        # Send message text to backend and get response
-        response = requests.post(f"{API_BASE_URL}/conversation", json={"message": text, "message_type": message_type})
+        # Send message text, message type, and chat ID to backend and get response
+        response = requests.post(
+            f"{API_BASE_URL}/conversation",
+            json={
+                "message": text,
+                "message_type": message_type,
+                "chat_id": chat_id
+            }
+        )
         
         if response.status_code == 200:
             reply_text = response.json().get("reply")
             await update.message.reply_text(reply_text)
+        elif response.status_code == 401:
+            await update.message.reply_text("La chat non è stata ancora autenticata. Se sei un Corsaro Nero ti basterà cliccare su questo comando /autenticazione e seguire le istruzioni.")
         else:
             await update.message.reply_text("Spiacente, c'è stato un problema nella connessione al server. Riprova più tardi e magari scrivilo nel gruppo SPAM")
     except RequestException as e:
