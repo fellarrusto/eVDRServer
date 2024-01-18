@@ -9,7 +9,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 TOKEN: Final = os.getenv('TOKEN', 'default_token')
 BOT_USERNAME: Final = os.getenv('BOT_USERNAME', 'default_bot_username')
 
-API_BASE_URL = "http://0.0.0.0:0000"
+API_BASE_URL = "http://0.0.0.0:8000/api/v1"
 
 # States for the conversation
 AUTH_STATES = range(1)
@@ -23,7 +23,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def indizio_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        response = requests.get(f"{API_BASE_URL}/indizio")
+        response = requests.get(f"{API_BASE_URL}/bot/indizio")
 
         if response.status_code == 200:
             indizio_url = response.json().get("url")
