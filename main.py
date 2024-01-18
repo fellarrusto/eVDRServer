@@ -22,8 +22,11 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Ciao, sono qui per valutare i tuoi ragionamenti, se mi invii una soluzione ti evidenzierò in grassetto le frasi che sono corrette. Per richiedere un VDR è semplicissimo, ti basterà scrivere un messaggio che comincia con \"Proposta soluzione:\", ecco un esempio:\n\nProposta soluzione:\n\nL'indizio della settimana ha una soluzione e questa soluzione porta a Crapolla.")
 
 async def indizio_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id: int = update.message.chat.id  # Extract chat ID
+
     try:
-        response = requests.get(f"{API_BASE_URL}/bot/indizio")
+        # Include chat_id in the request to the backend server
+        response = requests.get(f"{API_BASE_URL}/bot/indizio", params={"chat_id": chat_id})
 
         if response.status_code == 200:
             indizio_url = response.json().get("url")
@@ -36,6 +39,7 @@ async def indizio_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Log the exception here if you have logging set up
         print(f"An error occurred: {e}")
         await update.message.reply_text("Spiacente, c'è stato un problema nella connessione al server. Riprova più tardi e magari scrivilo nel gruppo SPAM")
+
 
 async def auth_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     await update.message.reply_text("Scrivi il tuo numero di cellulare per autenticare questa chat.")
@@ -73,7 +77,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         # Send message text to backend and get response
-        response = requests.post(f"{API_BASE_URL}/conversation", json={"message": text, "message_type": message_type, "chat_id": chat_id})
+        response = requests.post(f"{API_BASE_URL}/bot/conversation", json={"message": text, "message_type": message_type, "chat_id": chat_id})
         
         if response.status_code == 200:
             reply_text = response.json().get("reply")
