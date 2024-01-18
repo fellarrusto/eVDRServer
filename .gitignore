@@ -1,1 +1,4 @@
 /.venv
+evdr.py
+/src
+/__pycache__
