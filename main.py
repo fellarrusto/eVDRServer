@@ -81,7 +81,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         if response.status_code == 200:
             reply_text = response.json().get("reply")
-            await update.message.reply_text(reply_text, parse_mode="markdown")
+            await update.message.reply_text(reply_text, parse_mode="html")
         elif response.status_code == 401:
             await update.message.reply_text("La chat non è stata ancora autenticata. Se sei un Corsaro Nero ti basterà cliccare su questo comando /autenticazione e seguire le istruzioni.")
         else:
